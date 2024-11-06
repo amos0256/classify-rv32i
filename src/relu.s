@@ -23,13 +23,32 @@
 #   Result: [ 0, 0, 3,  0, 5]
 # ==============================================================================
 relu:
-    li t0, 1             
-    blt a1, t0, error     
-    li t1, 0             
+    li   t0, 1
+    blt  a1, t0, error
+    li   t1, 0
 
 loop_start:
-    # TODO: Add your own implementation
+    beq  a1, x0, end_relu    # if a1 == 0, goto end_relu
+
+    lw   t2, 0(a0)           # t2 = array[0]
+    bge  t2, t1, skip_set_zero   # if t2 >= 0, goto skip_set_zero
+
+    # set 0
+    li   t2, 0
+    sw   t2, 0(a0)
+
+skip_set_zero:
+    addi a0, a0, 4           # next element in array
+    addi a1, a1, -1          # update remaining number of elements
+    j    loop_start
+
+end_relu:
+    ret
 
 error:
-    li a0, 36          
-    j exit          
+    li   a0, 36
+    j    exit
+
+exit:
+    li   a7, 10
+    ecall
