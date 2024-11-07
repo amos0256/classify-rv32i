@@ -43,7 +43,7 @@ main_test:
 
     # exit program
     li   a0, 17
-    mv   a1, x0
+    li   a1, 0
     ecall
 
 # print specify string function
