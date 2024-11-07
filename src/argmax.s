@@ -25,29 +25,33 @@ argmax:
     li   t6, 1
     blt  a1, t6, handle_error
 
-    lw   t0, 0(a0)
+    lw   t0, 0(a0)           # t0 = array[i]
 
-    li   t1, 0
-    li   t2, 1
+    li   t1, 0               # t1 is first index of maximum number
+    li   t2, 1               # t2 = 1, i counter
+
+    mv   t3, t0              # t3 is maximum number
+
+    addi a0, a0, 4           # comparation start from index 1
 
 loop_start:
-    beq  t2, a1, end_loop    # if t2 == a1, goto end_loop
+    beq  t2, a1, end_argmax  # if t2 == a1, goto end_argmax
 
-    lw   t0, 0(a0)
+    lw   t0, 0(a0)           # t0 = array[i]
     addi a0, a0, 4           # next element in array
 
-    bgt  t3, t0, update_max  # if t3 > t0, update maximum and index
+    bgt  t0, t3, update_max  # if t0 > t3, update maximum and index
     j    loop_continue       # next loop
     
 update_max:
-    mv   t0, t3              # t0 = t3, update maximum
-    mv   t1, t2              # t1 = t2, update index of maximum
+    mv   t3, t0              # update maximum
+    mv   t1, t2              # update index of maximum
 
 loop_continue:
-    addi t2, t2, 1           # t2 += 1, increment index
+    addi t2, t2, 1           # increment index
     j    loop_start
 
-end_loop:
+end_argmax:
     mv   a0, t1              # return maximum Index
     ret
 
