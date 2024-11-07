@@ -27,18 +27,20 @@ relu:
     blt  a1, t0, error
     li   t1, 0
 
+    mv   t2, a0              # t2 = address of input array
+
 loop_start:
     beq  a1, x0, end_relu    # if a1 == 0, goto end_relu
 
-    lw   t2, 0(a0)           # t2 = array[0]
-    bge  t2, t1, skip_set_zero   # if t2 >= 0, goto skip_set_zero
+    lw   t3, 0(t2)           # t3 = array[i]
+    bge  t3, t1, skip_set_zero # if t3 >= 0, goto skip_set_zero
 
     # set 0
-    li   t2, 0
-    sw   t2, 0(a0)
+    li   t3, 0
+    sw   t3, 0(t2)
 
 skip_set_zero:
-    addi a0, a0, 4           # next element in array
+    addi t2, t2, 4           # next element in array
     addi a1, a1, -1          # update remaining number of elements
     j    loop_start
 
