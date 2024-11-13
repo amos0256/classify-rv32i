@@ -26,33 +26,43 @@
 #   - Exits with code 37 if any stride < 1
 # =======================================================
 dot:
+    addi sp, sp, -4
+    sw   s0, 0(sp)
+
     li   t0, 1
     blt  a2, t0, error_terminate
     blt  a3, t0, error_terminate
     blt  a4, t0, error_terminate
 
-    li   t0, 0
-    li   t1, 0
+    li   t0, 0               # t0 is result of dot
+    li   t1, 0               # i counter
+
+    slli t2, a3, 2           # t2 = stride0 * 4
+    slli t3, a4, 2           # t3 = stride1 * 4
 
 loop_start:
     bge  t1, a2, loop_end
     
-    # load arr0[i * stride0] and arr1[i * stride1]
-    mul  t2, t1, a3          # t2 = i * stride0, offset for arr0
-    mul  t3, t1, a4          # t3 = i * stride1, offset for arr1
-    add  t4, a0, t2          # t4 = arr0 base address + offset
-    add  t5, a1, t3          # t5 = arr1 base address + offset
-    lw   t6, 0(t4)           # Load element from arr0
-    lw   t7, 0(t5)           # Load element from arr1
+    lw   t4, 0(a0)           # t4 = arr0[i * stride0]
+    lw   t5, 0(a1)           # t5 = arr1[i * stride1]
 
-    # calculate product and accumulate
-    mul  t8, t6, t7          # t8 = arr0[i] * arr1[i]
-    add  t0, t0, t8          # sum += t8
+    li   s0, 0               # s0 is accumulator for the product
 
-    addi t1, t1, 1           # t1 += 1, increment index
+multiply:
+    beqz t5, accumulate
+    add  s0, s0, t4
+    addi t5, t5, -1
+    j    multiply
+
+accumulate:
+    add  t0, t0, s0
+
+    add  t2, t2, a3
+    add  t3, t3, a4
+    addi t1, t1, 1
     j    loop_start
 
-end_loop:
+loop_end:
     mv   a0, t0
     jr   ra
 
@@ -64,3 +74,7 @@ error_terminate:
 set_error_36:
     li   a0, 36
     j    exit
+
+exit:
+    li   a7, 10
+    ecall
