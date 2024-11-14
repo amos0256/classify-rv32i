@@ -116,10 +116,10 @@ inner_loop_start:
     
 inner_loop_end:
     # TODO: Add your own implementation
-    addi s0, s0, 1           # s0(col) += 1
+    addi s0, s0, 1           # s0(row) += 1
     slli t1, a2, 2
     add  s3, s3, t1
-    blt  s0, a1, outer_loop_start  # if s0 < a1, goto outer_loop_start
+    j    outer_loop_start
 
 outer_loop_end:
     lw   ra, 0(sp)
