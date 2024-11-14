@@ -10,7 +10,7 @@ element:
 stride_1:
     .word 2
 stride_2:
-    .word 1
+    .word 2
 output_msg:
     .string "Result of dot: "
 newline:
