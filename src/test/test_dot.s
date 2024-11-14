@@ -16,7 +16,6 @@ output_msg:
 newline:
     .string "\n"
 
-
 .text
 .globl main_test
 

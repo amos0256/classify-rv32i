@@ -1,4 +1,4 @@
-.import ./abs.s
+.import abs.s
 .globl dot
 
 .text
