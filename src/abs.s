@@ -16,13 +16,15 @@
 # =================================================================
 abs:
     # Prologue
-    ebreak
+    # ebreak
     # Load number from memory
-    lw t0 0(a0)
-    bge t0, zero, done
+    lw   t0, 0(a0)
+    bge  t0, zero, done
 
     # TODO: Add your own implementation
+    neg  t0, t0
+    sw   t0, 0(a0)
 
 done:
     # Epilogue
-    jr ra
+    jr   ra
