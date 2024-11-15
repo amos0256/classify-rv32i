@@ -1,4 +1,4 @@
-.import abs.s
+# .import abs.s
 .globl dot
 
 .text
@@ -62,10 +62,11 @@ loop_start:
 
 t4_negative:
     # for call abs function
-    mv   a0, s0              # s0 is the pointer to t4
-    jal  abs
+    # mv   a0, s0              # s0 is the pointer to t4
+    # jal  abs
 
-    lw   t4, 0(s0)           # t4 is absolute value
+    # lw   t4, 0(s0)           # t4 is absolute value
+    neg  t4, t4
     neg  s3, s3              # record negative
 
     # check the sign of t5
@@ -75,10 +76,11 @@ t5_check:
 
 t5_negative:
     # for call abs function
-    mv   a0, s1              # s1 is the pointer to t5
-    jal  abs
+    # mv   a0, s1              # s1 is the pointer to t5
+    # jal  abs
 
-    lw   t5, 0(s1)           # t5 is absolute value
+    # lw   t5, 0(s1)           # t5 is absolute value
+    neg  t5, t5
     neg  s3, s3              # record negative
 
 multiply:
