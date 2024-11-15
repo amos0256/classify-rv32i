@@ -167,6 +167,17 @@ classify:
     lw t0, 0(s3)
     lw t1, 0(s8)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # FIXME PART
+    li   a0, 0                 # a0 = 0
+    mv   t2, t1                # loop counter
+
+multiply_loop_1:
+    beqz t2, end_multiply_1    # if t2 == 0, goto end_multiply
+    add  a0, a0, t0            # a0 += t0
+    addi t2, t2, -1            # t2--
+    j    multiply_loop_1
+
+end_multiply_1:
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -205,7 +216,17 @@ classify:
     lw t1, 0(s8)
     # mul a1, t0, t1 # length of h array and set it as second argument
     # FIXME: Replace 'mul' with your own implementation
-    
+    # FIXME PART
+    li   a1, 0                 # a1 = 0
+    mv   t2, t1                # loop counter
+
+multiply_loop_2:
+    beqz t2, end_multiply_2    # if t2 == 0, goto end_multiply
+    add  a1, a1, t0            # a1 += t0
+    addi t2, t2, -1            # t2--
+    j    multiply_loop_2
+
+end_multiply_2:
     jal relu
     
     lw a0, 0(sp)
@@ -227,6 +248,17 @@ classify:
     lw t0, 0(s3)
     lw t1, 0(s6)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # FIXME PART
+    li   a0, 0                 # a0 = 0
+    mv   t2, t1                # loop counter
+
+multiply_loop_3:
+    beqz t2, end_multiply_3    # if t2 == 0, goto end_multiply
+    add  a0, a0, t0            # a0 += t0
+    addi t2, t2, -1            # t2--
+    j    multiply_loop_3
+
+end_multiply_3:
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -288,7 +320,17 @@ classify:
     lw t1, 0(s6)
     mul a1, t0, t1 # load length of array into second arg
     # FIXME: Replace 'mul' with your own implementation
-    
+    # FIXME PART
+    li   a1, 0                 # a0 = 0
+    mv   t2, t1                # loop counter
+
+multiply_loop_4:
+    beqz t2, end_multiply_4    # if t2 == 0, goto end_multiply
+    add  a1, a1, t0            # a1 += t0
+    addi t2, t2, -1            # t2--
+    j    multiply_loop_4
+
+end_multiply_4:
     jal argmax
     
     mv t0, a0 # move return value of argmax into t0
@@ -384,3 +426,8 @@ error_args:
 error_malloc:
     li a0, 26
     j exit
+
+exit:
+    mv   a1, a0
+    li   a0, 17
+    ecall
