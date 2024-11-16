@@ -77,31 +77,19 @@ read_matrix:
     # mul s1, t1, t2   # s1 is number of elements
     # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
-    # check if t1 or t2 is negative
-    li   t4, 1
-    bltz t1, t1_negative
-    j    t2_check
-
-t1_negative:
-    neg  t1, t1
-    neg  t4, t4
-
-t2_check:
-    bltz t2, t2_negative
-    j    prepare_multiply
-
-t2_negative:
-    neg  t2, t2
-    neg  t4, t4
-
-prepare_multiply:
     li   s1, 0                 # s1 = 0
     mv   t3, t2                # loop counter
+    mv   t4, t1
 
 multiply_loop:
     beqz t3, end_multiply      # if t3 == 0, goto end_multiply
-    add  s1, s1, t1            # s1 += t1
-    addi t3, t3, -1            # t3--
+    andi t5, t3, 1
+    beqz t5, skip_add
+    add  s1, s1, t4
+
+skip_add:
+    slli t4, t4, 1
+    srli t3, t3, 1
     j    multiply_loop
 
 end_multiply:

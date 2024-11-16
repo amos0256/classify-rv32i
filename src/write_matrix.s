@@ -64,31 +64,19 @@ write_matrix:
     # mul s4, s2, s3   # s4 = total elements
     # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
-    # check if s2 or s3 is negative
-    li   t1, 1
-    bltz s2, s2_negative
-    j    s3_check
-
-s2_negative:
-    neg  s2, s2
-    neg  t1, t1
-
-s3_check:
-    bltz s3, s3_negative
-    j    prepare_multiply
-
-s3_negative:
-    neg  s3, s3
-    neg  t1, t1
-
-prepare_multiply:
     li   s4, 0                 # s4 = 0
-    mv   t0, s3                # loop counter
+    mv   t0, s3
+    mv   t1, s2
 
 multiply_loop:
     beqz t0, end_multiply      # if t0 == 0, goto end_multiply
-    add  s4, s4, s2            # s4 += s2
-    addi t0, t0, -1            # t0--
+    andi t2, t0, 1
+    beqz t2, skip_add
+    add  s4, s4, t1
+    
+skip_add:
+    slli t1, t1, 1
+    srli t0, t0, 1
     j    multiply_loop
 
 end_multiply:

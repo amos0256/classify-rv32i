@@ -167,35 +167,11 @@ classify:
     lw t0, 0(s3)
     lw t1, 0(s8)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
-    # FIXME PART
-    # check if t0 or t1 is negative
-    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
-    bltz t0, t0_negative_1     # if t0 < 0, goto t0_negative
-    j    t1_check_1
 
-t0_negative_1:
-    neg  t0, t0                # make t0 positive
-    neg  t3, t3
+    mv   a0, t0
+    mv   a1, t1
+    jal  multiplication
 
-t1_check_1:
-    bltz t1, t1_negative_1     # if t1 < 0, goto negate_t1
-    j    prepare_multiply_1
-
-t1_negative_1:
-    neg  t1, t1                # make t1 positive
-    neg  t3, t3
-
-prepare_multiply_1:
-    li   a0, 0                 # a0 = 0
-    mv   t2, t1                # loop counter
-
-multiply_loop_1:
-    beqz t2, end_multiply_1    # if t2 == 0, goto end_multiply
-    add  a0, a0, t0            # a0 += t0
-    addi t2, t2, -1            # t2--
-    j    multiply_loop_1
-
-end_multiply_1:
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -234,35 +210,18 @@ end_multiply_1:
     lw t1, 0(s8)
     # mul a1, t0, t1 # length of h array and set it as second argument
     # FIXME: Replace 'mul' with your own implementation
-    # FIXME PART
-    # check if t0 or t1 is negative
-    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
-    bltz t0, t0_negative_2     # if t0 < 0, goto t0_negative
-    j    t1_check_2
 
-t0_negative_2:
-    neg  t0, t0                # make t0 positive
-    neg  t3, t3
+    addi sp, sp, -4
+    sw   a0, 0(sp)
+    
+    mv   a0, t0
+    mv   a1, t1
+    jal  multiplication
+    mv   a1, a0
 
-t1_check_2:
-    bltz t1, t1_negative_2     # if t1 < 0, goto negate_t1
-    j    prepare_multiply_2
+    lw   a0, 0(sp)
+    addi sp, sp, 4
 
-t1_negative_2:
-    neg  t1, t1                # make t1 positive
-    neg  t3, t3
-
-prepare_multiply_2:
-    li   a1, 0                 # a1 = 0
-    mv   t2, t1                # loop counter
-
-multiply_loop_2:
-    beqz t2, end_multiply_2    # if t2 == 0, goto end_multiply
-    add  a1, a1, t0            # a1 += t0
-    addi t2, t2, -1            # t2--
-    j    multiply_loop_2
-
-end_multiply_2:
     jal relu
     
     lw a0, 0(sp)
@@ -284,35 +243,11 @@ end_multiply_2:
     lw t0, 0(s3)
     lw t1, 0(s6)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
-    # FIXME PART
-    # check if t0 or t1 is negative
-    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
-    bltz t0, t0_negative_3     # if t0 < 0, goto t0_negative
-    j    t1_check_3
 
-t0_negative_3:
-    neg  t0, t0                # make t0 positive
-    neg  t3, t3
+    mv   a0, t0
+    mv   a1, t1
+    jal  multiplication
 
-t1_check_3:
-    bltz t1, t1_negative_3     # if t1 < 0, goto negate_t1
-    j    prepare_multiply_3
-
-t1_negative_3:
-    neg  t1, t1                # make t1 positive
-    neg  t3, t3
-
-prepare_multiply_3:
-    li   a0, 0                 # a0 = 0
-    mv   t2, t1                # loop counter
-
-multiply_loop_3:
-    beqz t2, end_multiply_3    # if t2 == 0, goto end_multiply
-    add  a0, a0, t0            # a0 += t0
-    addi t2, t2, -1            # t2--
-    j    multiply_loop_3
-
-end_multiply_3:
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -372,37 +307,20 @@ end_multiply_3:
     mv a0, s10 # load o array into first arg
     lw t0, 0(s3)
     lw t1, 0(s6)
-    # mul a1, t0, t1 # load length of array into second arg
+    mul a1, t0, t1 # load length of array into second arg
     # FIXME: Replace 'mul' with your own implementation
-    # FIXME PART
-    # check if t0 or t1 is negative
-    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
-    bltz t0, t0_negative_4     # if t0 < 0, goto t0_negative
-    j    t1_check_4
 
-t0_negative_4:
-    neg  t0, t0                # make t0 positive
-    neg  t3, t3
+    addi sp, sp, -4
+    sw   a0, 0(sp)
+    
+    mv   a0, t0
+    mv   a1, t1
+    jal  multiplication
+    mv   a1, a0
 
-t1_check_4:
-    bltz t1, t1_negative_4     # if t1 < 0, goto negate_t1
-    j    prepare_multiply_4
+    lw   a0, 0(sp)
+    addi sp, sp, 4
 
-t1_negative_4:
-    neg  t1, t1                # make t1 positive
-    neg  t3, t3
-
-prepare_multiply_4:
-    li   a1, 0                 # a0 = 0
-    mv   t2, t1                # loop counter
-
-multiply_loop_4:
-    beqz t2, end_multiply_4    # if t2 == 0, goto end_multiply
-    add  a1, a1, t0            # a1 += t0
-    addi t2, t2, -1            # t2--
-    j    multiply_loop_4
-
-end_multiply_4:
     jal argmax
     
     mv t0, a0 # move return value of argmax into t0
@@ -499,7 +417,47 @@ error_malloc:
     li a0, 26
     j exit
 
-exit:
-    mv   a1, a0
-    li   a0, 17
-    ecall
+
+
+# Function Multiplication
+# a0 is multiplier
+# a1 is multiplicand
+multiplication:
+    li   t2, 1                 # t2 is used to identify positive(1)/negative(-1)
+    bltz a0, multiplier_neg    # if a0 < 0, goto multiplier_neg
+    j    multiplicand_check
+
+multiplier_neg:
+    neg  a0, a0
+    neg  t2, t2
+
+multiplicand_check:
+    bltz a1, multiplicand_neg
+    j    prepare_multiply
+
+multiplicand_neg:
+    neg  a1, a1
+    neg  t2, t2
+
+prepare_multiply:
+    li   t3, 0
+
+multiply_loop:
+    beqz a1, sign_check
+    andi t4, a1, 1
+    beqz t4, skip_add
+    add  t3, t3, a0
+
+skip_add:
+    slli a0, a0, 1
+    srli a1, a1, 1
+    j    multiply_loop
+
+sign_check:
+    bgez t2, end_multiply
+    neg  t3, t3
+
+end_multiply:
+    mv   a0, t3
+
+    jr   ra

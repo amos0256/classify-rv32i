@@ -85,8 +85,13 @@ t5_negative:
 
 multiply:
     beqz t5, accumulate      # if t5 == 0, goto accumulate
+    andi t6, t5, 1           # t6 = t5 & 1
+    beqz t6, skip_add        # if t0 == 0, goto skip_add
     add  s2, s2, t4          # s2 += t4
-    addi t5, t5, -1          # t5--
+
+skip_add:
+    slli t4, t4, 1           # t4 <<= 1
+    srli t5, t5, 1           # t5 >>= 1
     j    multiply
 
 accumulate:
