@@ -168,6 +168,24 @@ classify:
     lw t1, 0(s8)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
+    # check if t0 or t1 is negative
+    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
+    bltz t0, t0_negative_1     # if t0 < 0, goto t0_negative
+    j    t1_check_1
+
+t0_negative_1:
+    neg  t0, t0                # make t0 positive
+    neg  t3, t3
+
+t1_check_1:
+    bltz t1, t1_negative_1     # if t1 < 0, goto negate_t1
+    j    prepare_multiply_1
+
+t1_negative_1:
+    neg  t1, t1                # make t1 positive
+    neg  t3, t3
+
+prepare_multiply_1:
     li   a0, 0                 # a0 = 0
     mv   t2, t1                # loop counter
 
@@ -217,6 +235,24 @@ end_multiply_1:
     # mul a1, t0, t1 # length of h array and set it as second argument
     # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
+    # check if t0 or t1 is negative
+    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
+    bltz t0, t0_negative_2     # if t0 < 0, goto t0_negative
+    j    t1_check_2
+
+t0_negative_2:
+    neg  t0, t0                # make t0 positive
+    neg  t3, t3
+
+t1_check_2:
+    bltz t1, t1_negative_2     # if t1 < 0, goto negate_t1
+    j    prepare_multiply_2
+
+t1_negative_2:
+    neg  t1, t1                # make t1 positive
+    neg  t3, t3
+
+prepare_multiply_2:
     li   a1, 0                 # a1 = 0
     mv   t2, t1                # loop counter
 
@@ -249,6 +285,24 @@ end_multiply_2:
     lw t1, 0(s6)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
+    # check if t0 or t1 is negative
+    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
+    bltz t0, t0_negative_3     # if t0 < 0, goto t0_negative
+    j    t1_check_3
+
+t0_negative_3:
+    neg  t0, t0                # make t0 positive
+    neg  t3, t3
+
+t1_check_3:
+    bltz t1, t1_negative_3     # if t1 < 0, goto negate_t1
+    j    prepare_multiply_3
+
+t1_negative_3:
+    neg  t1, t1                # make t1 positive
+    neg  t3, t3
+
+prepare_multiply_3:
     li   a0, 0                 # a0 = 0
     mv   t2, t1                # loop counter
 
@@ -318,9 +372,27 @@ end_multiply_3:
     mv a0, s10 # load o array into first arg
     lw t0, 0(s3)
     lw t1, 0(s6)
-    mul a1, t0, t1 # load length of array into second arg
+    # mul a1, t0, t1 # load length of array into second arg
     # FIXME: Replace 'mul' with your own implementation
     # FIXME PART
+    # check if t0 or t1 is negative
+    li   t3, 1                 # t3 is used to identify positive(1)/negative(-1)
+    bltz t0, t0_negative_4     # if t0 < 0, goto t0_negative
+    j    t1_check_4
+
+t0_negative_4:
+    neg  t0, t0                # make t0 positive
+    neg  t3, t3
+
+t1_check_4:
+    bltz t1, t1_negative_4     # if t1 < 0, goto negate_t1
+    j    prepare_multiply_4
+
+t1_negative_4:
+    neg  t1, t1                # make t1 positive
+    neg  t3, t3
+
+prepare_multiply_4:
     li   a1, 0                 # a0 = 0
     mv   t2, t1                # loop counter
 
